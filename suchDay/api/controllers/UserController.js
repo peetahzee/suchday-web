@@ -20,8 +20,7 @@ var googleapis = require('googleapis'),
     CLIENT_ID = '99312021964-5hc9j067l4svgh87sg3vc8ran4m1ctbm.apps.googleusercontent.com',
     CLIENT_SECRET = 'vAeqhqqdXQ7THNm8Y6zLWVm9',
     REDIRECT_URL = 'http://dash.ptzlabs.com/user/oAuthCallback',
-    atob = require('atob'),
-    User = require('../models/User.js');
+    atob = require('atob');
 
 var oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 
@@ -45,15 +44,16 @@ module.exports = {
         var u = atob(tokens.id_token.split('.')[1]);
         console.log(u);
         if (tokens.refresh_token) {
-          User.findOne(u.sub).done(function(err, user) {
-            if(typeof user === 'undefined') {
-              console.log('cant find user');
-            } else {
-              console.log('found user');
-            }
-            console.log(tokens);
-            res.send(tokens);
-          });
+          // User.findOne(u.sub).done(function(err, user) {
+          //   if(typeof user === 'undefined') {
+          //     console.log('cant find user');
+          //   } else {
+          //     console.log('found user');
+          //   }
+          //   console.log(tokens);
+          //   res.send(tokens);
+          // });
+          res.send(tokens);
         } else {
           res.send(tokens);
         }
