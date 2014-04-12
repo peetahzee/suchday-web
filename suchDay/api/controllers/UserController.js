@@ -40,18 +40,18 @@ module.exports = {
         res.send(err);
       } else {
         console.log(tokens);
-        var u = atob(tokens.id_token.split('.')[1]);
+        var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
         console.log(u);
         if (tokens.refresh_token) {
-          // User.findOne(u.sub).done(function(err, user) {
-          //   if(typeof user === 'undefined') {
-          //     console.log('cant find user');
-          //   } else {
-          //     console.log('found user');
-          //   }
-          //   console.log(tokens);
-          //   res.send(tokens);
-          // });
+          User.findOne(u.sub).done(function(err, user) {
+            if(typeof user === 'undefined') {
+              console.log('cant find user');
+            } else {
+              console.log('found user');
+            }
+            console.log(tokens);
+            // res.send(tokens);
+          });
           var toReturn = {
             userId: u.sub,
             test: "Test info"
