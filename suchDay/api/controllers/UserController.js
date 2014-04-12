@@ -15,9 +15,31 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+var googleapis = require('googleapis'),
+    OAuth2 = googleapis.auth.OAuth2,
+    CLIENT_ID = '99312021964-5hc9j067l4svgh87sg3vc8ran4m1ctbm.apps.googleusercontent.com',
+    CLIENT_SECRET = 'vAeqhqqdXQ7THNm8Y6zLWVm9',
+    REDIRECT_URL = 'http://dash.ptzlabs.com/user/oAuthCallback';
+
+var oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
+
 module.exports = {
-    
-  
+  index: function(req, res) {
+    var url = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
+          scope: 'https://www.googleapis.com/auth/plus.me'
+    });
+    res.redirect(url);
+  },
+  oAuthCallback: function(req, res) {
+    oauth2Client.getToken(req.param('code'), function(err, tokens) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(tokens);
+      }
+    });
+  },
 
 
   /**
