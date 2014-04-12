@@ -1,11 +1,7 @@
 <script type="text/javascript">
-  $(document).ready(function() {
-    var currentWidget = null;
-    $("#new-widget-button").click(function() {
-      currentWidget = null;
-      $('form[name=widget-edit]').find('input[type=text], textarea').val('');
-      $('#delete-widget-button').hide();
-    });
+  var currentWidget = null;
+  function attachWidgetListener() {
+    $("#widgets li").unbind('click');
     $("#widgets li").click(function() {
       currentWidget = $(this).data('id');
       $('#delete-widget-button').show();
@@ -17,6 +13,13 @@
         $('input[name=settingsUrl]').val(data.settingsUrl);
       });
     });
+  }
+  $(document).ready(function() {
+    $("#new-widget-button").click(function() {
+      currentWidget = null;
+      $('form[name=widget-edit]').find('input[type=text], textarea').val('');
+      $('#delete-widget-button').hide();
+    });
 
     $("#delete-widget-button").click(function () {
       $.post(window.location.pathname + '/destroy/' + currentWidget, function(data) {
@@ -25,6 +28,8 @@
         currentWidget = null;
       });
     });
+
+    attachWidgetListener();
 
     $('form[name=widget-edit]').submit(function() {
       data = {
@@ -37,11 +42,12 @@
       if(currentWidget == null) {
         $.post(window.location.pathname + '/create', data, function(data) {
           $("#widgets").append('<li class="button" data-id="' + data.id + '">' + data.name + '</li>');
+          attachWidgetListener();
         });
       } else {
-        $.post(window.location.pathname + '/update/' + currentWidget, data, function(data) {
-        });
+        $.post(window.location.pathname + '/update/' + currentWidget, data);
       }
+      $('form[name=widget-edit]').find('input[type=text], textarea').val('');
       return false;
     });
   });
