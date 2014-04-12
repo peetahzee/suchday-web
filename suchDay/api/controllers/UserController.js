@@ -30,7 +30,7 @@ module.exports = {
     var url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: 'https://www.googleapis.com/auth/plus.me',
-        approvalprompt: 'force'
+        approval_prompt: 'force'
     });
     res.redirect(url);
   },
