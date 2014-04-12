@@ -26,7 +26,6 @@ var oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 
 module.exports = {
   index: function(req, res) {
-    console.log('hitting index');
     var url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: 'https://www.googleapis.com/auth/plus.me',
@@ -35,14 +34,13 @@ module.exports = {
     res.redirect(url);
   },
   oAuthCallback: function(req, res) {
-    console.log('hitting oauthcallback with code ' + req.param('code'));
     oauth2Client.getToken(req.param('code'), function(err, tokens) {
       if(err) {
         console.log(err);
         res.send(err);
       } else {
+        console.log(tokens);
         var u = atob(tokens.id_token.split('.')[1]);
-        console.log(u);
         if (tokens.refresh_token) {
           // User.findOne(u.sub).done(function(err, user) {
           //   if(typeof user === 'undefined') {
@@ -53,8 +51,10 @@ module.exports = {
           //   console.log(tokens);
           //   res.send(tokens);
           // });
-          var toReturn = {};
-          toReturn.userId = u.sub;
+          var toReturn = {
+            userId: u.sub,
+            test: "Test info"
+          };
           res.send(toReturn);
         } else {
           res.send(tokens);
