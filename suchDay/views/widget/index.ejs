@@ -1,0 +1,86 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    var currentWidget = null;
+    $("#new-widget-button").click(function() {
+      currentWidget = null;
+      $('form[name=widget-edit]').find('input[type=text], textarea').val('');
+      $('#delete-widget-button').hide();
+    });
+    $("#widgets li").click(function() {
+      currentWidget = $(this).data('id');
+      $('#delete-widget-button').show();
+      $.get(window.location.pathname + '/' + currentWidget, function(data) {
+        $('input[name=name]').val(data.name);
+        $('input[name=url]').val(data.url);
+        $('input[name=voiceUrl]').val(data.voiceUrl);
+        $('textarea[name=data]').val(data.data);
+        $('input[name=settingsUrl]').val(data.settingsUrl);
+      });
+    });
+
+    $("#delete-widget-button").click(function () {
+      $.post(window.location.pathname + '/destroy/' + currentWidget, function(data) {
+        $('#widgets li[data-id=' + currentWidget + ']').remove();
+        $('form[name=widget-edit]').find('input[type=text], textarea').val('');
+        currentWidget = null;
+      });
+    });
+
+    $('form[name=widget-edit]').submit(function() {
+      data = {
+        name: $(this).find('input[name=name]').val(),
+        url: $(this).find('input[name=url]').val(),
+        voiceUrl: $(this).find('input[name=voiceUrl]').val(),
+        data: $(this).find('textarea[name=data]').val(),
+        settingsUrl: $(this).find('input[name=settingsUrl]').val()
+      };
+      if(currentWidget == null) {
+        $.post(window.location.pathname + '/create', data, function(data) {
+          $("#widgets").append('<li class="button" data-id="' + data.id + '">' + data.name + '</li>');
+        });
+      } else {
+        $.post(window.location.pathname + '/update/' + currentWidget, data, function(data) {
+        });
+      }
+      return false;
+    });
+  });
+</script>
+<div class="section">
+  <form name="widget-edit">
+    <div class="keyvalue">
+      <label>Name</label>
+      <input type="text" name="name" />
+    </div>
+
+    <div class="keyvalue">
+      <label>URL</label>
+      <input type="text" name="url" />
+    </div>
+
+    <div class="keyvalue">
+    <label>Voice URL</label>
+    <input type="text" name="voiceUrl" />
+    </div>
+
+    <div class="keyvalue">
+    <label>Data</label>
+    <textarea name="data"></textarea>
+    </div>
+
+    <div class="keyvalue">
+    <label>Settings URL</label>
+    <input type="text" name="settingsUrl" />
+    </div>
+
+    <label></label>
+    <input type="submit" value="Submit" />
+    <div class="button red" id="delete-widget-button" style="display: none;">Delete</div>
+  </form>
+</div>
+<div class="button" id="new-widget-button">+ Submit a new Widget</div>
+<ul id="widgets">
+  <% _.each(widgets, function (widget) { %>
+    <li class="button" data-id="<%= widget.id %>"><%= widget.name %></li>
+  <% }) %>
+</ul>
