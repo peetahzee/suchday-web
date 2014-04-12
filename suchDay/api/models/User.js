@@ -16,7 +16,7 @@ module.exports = {
     name: {
       type: 'STRING',
       required: true
-    }
+    },
+    refreshToken: 'STRING'
   }
-
 };

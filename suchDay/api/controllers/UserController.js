@@ -28,7 +28,8 @@ module.exports = {
     console.log('hitting index');
     var url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
-          scope: 'https://www.googleapis.com/auth/plus.me'
+        scope: 'https://www.googleapis.com/auth/plus.me',
+        approvalprompt: 'force'
     });
     res.redirect(url);
   },
@@ -39,8 +40,19 @@ module.exports = {
         console.log(err);
         res.send(err);
       } else {
-        console.log(tokens);
-        res.send(tokens);
+        var u = btoa(tokens.id_token);
+        console.log(u);
+        if (tokens.refresh_token) {
+          User.findOne(u.sub).done(function(err, user) {
+            if(typeof user === 'undefined') {
+              console.log('cant find user');
+            } else {
+              console.log('found user');
+            }
+            console.log(tokens);
+            res.send(tokens);
+          });
+        }
       }
     });
   },
