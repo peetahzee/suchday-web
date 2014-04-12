@@ -25,6 +25,7 @@ var oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 
 module.exports = {
   index: function(req, res) {
+    console.log('hitting index');
     var url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
           scope: 'https://www.googleapis.com/auth/plus.me'
@@ -32,10 +33,13 @@ module.exports = {
     res.redirect(url);
   },
   oAuthCallback: function(req, res) {
+    console.log('hitting oauthcallback with code ' + req.param('code'));
     oauth2Client.getToken(req.param('code'), function(err, tokens) {
       if(err) {
+        console.log(err);
         res.send(err);
       } else {
+        console.log(tokens);
         res.send(tokens);
       }
     });
