@@ -1,0 +1,2 @@
+# suchDay
+### a Sails application
