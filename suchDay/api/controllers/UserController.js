@@ -53,7 +53,9 @@ module.exports = {
           //   console.log(tokens);
           //   res.send(tokens);
           // });
-          res.send(tokens);
+          var toReturn = {};
+          toReturn.userId = u.sub;
+          res.send(toReturn);
         } else {
           res.send(tokens);
         }
