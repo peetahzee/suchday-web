@@ -41,7 +41,7 @@ module.exports = {
         console.log(err);
         res.send(err);
       } else {
-        var u = atob(tokens.id_token);
+        var u = atob(tokens.id_token.split('.')[1]);
         console.log(u);
         if (tokens.refresh_token) {
           User.findOne(u.sub).done(function(err, user) {
