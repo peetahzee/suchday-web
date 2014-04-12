@@ -34,7 +34,7 @@ module.exports.routes = {
   // (This would also work if you had a file at: `/views/home.ejs`)
   '/': {
     view: 'home/index'
-  }
+  },
 
   /*
   // But what if you want your home page to display
@@ -78,6 +78,10 @@ module.exports.routes = {
 
   // You would want to define the following route to handle your form:
   'post /signup': 'UserController.signup'
+
+  */
+  'get /widgets': 'UsageController.getWidgets'
+  /*
 
 
   // What about the ever-popular "vanity URLs" aka URL slugs?

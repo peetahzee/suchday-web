@@ -50,6 +50,9 @@ input, textarea {
   font-weight: 300;
   font-size: 15px;
 }
+#widget-id {
+  display: inline-block;
+}
 
 textarea{
   height: 100px;

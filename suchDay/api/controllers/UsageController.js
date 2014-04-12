@@ -16,9 +16,32 @@
  */
 
 module.exports = {
-    
-  
-
+  getWidgets: function(req, res) {
+    Usage.findByUser(req.param('user')).done(function(err, usages) {
+      var widgets = [];
+      var processedUsage = 0;
+      for(var i in usages) {
+        Widget.findOne(usages[i].widget).done(function(err, widget) {
+          if(err) {
+            widgets.push(err);
+          } else if (typeof widget === 'undefined') {
+          } else {
+            try {
+              widget.data = JSON.parse(usages[i].data);
+            } catch (e) {
+              widget.data = null;
+            }
+            widget.user = usages[i].user;
+            widgets.push(widget);
+          }
+          processedUsage++;
+          if(processedUsage == usages.length) {
+            return res.send(widgets);
+          }
+        });
+      }
+    });
+  },
 
   /**
    * Overrides for the settings in `config/controllers.js`
