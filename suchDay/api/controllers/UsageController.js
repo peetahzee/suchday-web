@@ -20,6 +20,9 @@ module.exports = {
     Usage.findByUser(req.param('user')).done(function(err, usages) {
       var widgets = [];
       var processedUsage = 0;
+      if(usages.length === 0) {
+        return res.send([]);
+      }
       for(var i in usages) {
         Widget.findOne(usages[i].widget).done(function(err, widget) {
           if(err) {
