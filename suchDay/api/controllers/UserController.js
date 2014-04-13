@@ -39,7 +39,7 @@ module.exports = {
         console.log(err);
         res.send(err);
       } else {
-        oauth.credentials = {
+        oauth2Client.credentials = {
           access_token: tokens.access_token,
           refresh_token: tokens.refresh_token
         };
