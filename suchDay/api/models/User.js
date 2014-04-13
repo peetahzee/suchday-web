@@ -18,6 +18,7 @@ module.exports = {
       required: true
     },
     refreshToken: 'STRING',
+    shouldLaunch: 'BOOLEAN',
     toJSON: function() {
       var obj = this.toObject();
       delete obj.refreshToken;

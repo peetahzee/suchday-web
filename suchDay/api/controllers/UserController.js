@@ -76,6 +76,32 @@ module.exports = {
     });
   },
 
+  launch: function(req, res){
+    User.findByGoogleId(req.param('user')).done(function(err, users) {
+      var user = users[0];
+      user.shouldLaunch = true;
+      user.save(function(err){
+        if(err){
+          res.statusCode = 500;
+        }
+        else
+          res.statusCode = 200;
+      });
+    });
+  },
+
+  shouldLaunch: function(req, res){
+    User.findByGoogleId(req.param('user')).done(function(err, users) {
+      var user = users[0];
+      if(err){
+        res.statusCode = 500;
+      }
+      else{
+        res.send(true);
+      }
+    });
+  },
+
   /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to UserController)

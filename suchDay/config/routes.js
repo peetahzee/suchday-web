@@ -81,6 +81,8 @@ module.exports.routes = {
 
   */
   'get /widgets': 'UsageController.getWidgets',
+  'post /launch': 'UserController.launch',
+  'get /shouldLaunch': 'UserController.shouldLaunch',
   /*
 
 
