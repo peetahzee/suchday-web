@@ -28,8 +28,8 @@ module.exports = {
   index: function(req, res) {
     var url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: 'https://www.googleapis.com/auth/plus.me',
-        approval_prompt: 'force'
+        scope: 'https://www.googleapis.com/auth/plus.me'
+        // approval_prompt: 'force'
     });
     res.redirect(url);
   },
@@ -39,23 +39,28 @@ module.exports = {
         console.log(err);
         res.send(err);
       } else {
-        console.log(tokens);
         var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
         console.log(u);
         if (tokens.refresh_token) {
-          User.findOne(u.sub).done(function(err, user) {
-            if(typeof user === 'undefined') {
-              console.log('cant find user');
-            } else {
-              console.log('found user');
-            }
-            console.log(tokens);
-            // res.send(tokens);
-          });
           var toReturn = {
             userId: u.sub,
             test: "Test info"
           };
+          User.findOne(u.sub).done(function(err, user) {
+            if(typeof user === 'undefined') {
+              googleapis.discover('plus', 'v1').execute(function(err, client) {
+                client.plus.people.get({userId:'me'})
+                  .withAuthClient(tokens)
+                  .execute(function(err, data) {
+                    console.log(data);
+                  });;
+              });
+              console.log('cant find user');
+            } else {
+              console.log('found user');
+            }
+            // res.send(tokens);
+          });
           res.send(toReturn);
         } else {
           res.send(tokens);
@@ -71,5 +76,4 @@ module.exports = {
    */
   _config: {}
 
-  
 };
