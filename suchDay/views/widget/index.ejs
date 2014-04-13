@@ -5,9 +5,11 @@
     $("#widgets li").click(function() {
       currentWidget = $(this).data('id');
       $('#delete-widget-button').show();
+
       $.get(window.location.pathname + '/' + currentWidget, function(data) {
         $('#widget-id').html(data.id);
         $('input[name=name]').val(data.name);
+        $('input[name=logo]').val(data.logo);
         $('input[name=url]').val(data.url);
         $('input[name=voiceUrl]').val(data.voiceUrl);
         try {
@@ -40,6 +42,7 @@
     $('form[name=widget-edit]').submit(function() {
       data = {
         name: $(this).find('input[name=name]').val(),
+        logo: $(this).find('input[name=logo]').val(),
         url: $(this).find('input[name=url]').val(),
         voiceUrl: $(this).find('input[name=voiceUrl]').val(),
         data: $(this).find('textarea[name=data]').val(),
@@ -70,6 +73,11 @@
     <div class="keyvalue">
       <label>Name</label>
       <input type="text" name="name" />
+    </div>
+
+    <div class="keyvalue">
+      <label>Logo</label>
+      <input type="text" name="logo" />
     </div>
 
     <div class="keyvalue">
