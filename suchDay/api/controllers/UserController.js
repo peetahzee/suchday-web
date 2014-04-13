@@ -45,10 +45,6 @@ module.exports = {
         };
         var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
         if (tokens.refresh_token) {
-          var toReturn = {
-            userId: u.sub,
-            test: "Test info"
-          };
           User.findOne(u.sub).done(function(err, user) {
             if(typeof user === 'undefined') {
               googleapis.discover('plus', 'v1').execute(function(err, client) {
@@ -70,6 +66,7 @@ module.exports = {
           });
         } else {
           User.findOne(u.sub).done(function(err, user) {
+            if(err) { console.log(err); }
             res.send(user);
           });
         }
