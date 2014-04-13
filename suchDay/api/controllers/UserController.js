@@ -28,8 +28,8 @@ module.exports = {
   index: function(req, res) {
     var url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: 'https://www.googleapis.com/auth/plus.me'
-        // approval_prompt: 'force'
+        scope: 'https://www.googleapis.com/auth/plus.me',
+        approval_prompt: 'force'
     });
     res.redirect(url);
   },
@@ -53,7 +53,7 @@ module.exports = {
                   .withAuthClient(tokens)
                   .execute(function(err, data) {
                     console.log(data);
-                  });;
+                  });
               });
               console.log('cant find user');
             } else {
