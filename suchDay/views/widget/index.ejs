@@ -42,6 +42,7 @@
         settingsUrl: $(this).find('input[name=settingsUrl]').val()
       };
       if(currentWidget == null) {
+        console.log(data);
         $.post(window.location.pathname + '/create', data, function(data) {
           $("#widgets").append('<li class="button" data-id="' + data.id + '">' + data.name + '</li>');
           attachWidgetListener();
