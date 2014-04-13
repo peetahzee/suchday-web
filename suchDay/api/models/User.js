@@ -17,12 +17,12 @@ module.exports = {
       type: 'STRING',
       required: true
     },
-    refreshToken: 'STRING'
+    refreshToken: 'STRING',
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.refreshToken;
+      return obj;
+    }
   },
 
-  toJSON: function() {
-    var obj = this.toObject();
-    delete obj.refreshToken;
-    return obj;
-  }
 };

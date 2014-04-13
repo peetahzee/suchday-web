@@ -22,6 +22,11 @@ module.exports = {
       res.view({widgets: widgets});
     });
   },
+  all: function(req, res) {
+    Widget.find().done(function(err, widgets) {
+      res.send(widgets);
+    });
+  },
 
   /**
    * Overrides for the settings in `config/controllers.js`
