@@ -66,9 +66,9 @@ module.exports = {
           });
         } else {
           console.log("found user " + u.sub);
-          User.findOne(u.sub).done(function(err, user) {
+          User.findByGoogleId(u.sub).done(function(err, users) {
             if(err) { console.log(err); }
-            res.send(user);
+            res.send(users[0]);
           });
         }
       }
