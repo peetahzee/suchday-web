@@ -19,7 +19,7 @@ var googleapis = require('googleapis'),
     OAuth2 = googleapis.auth.OAuth2,
     CLIENT_ID = '99312021964-5hc9j067l4svgh87sg3vc8ran4m1ctbm.apps.googleusercontent.com',
     CLIENT_SECRET = 'vAeqhqqdXQ7THNm8Y6zLWVm9',
-    REDIRECT_URL = 'http://dash.ptzlabs.com/user/oAuthCallback',
+    REDIRECT_URL = 'http://localhost:1337/user/oAuthCallback',
     atob = require('atob');
 
 var oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
@@ -79,6 +79,7 @@ module.exports = {
   launch: function(req, res){
     User.findByGoogleId(req.param('user')).done(function(err, users) {
       var user = users[0];
+      console.log(user);
       user.shouldLaunch = true;
       user.save(function(err){
         if(err){
@@ -86,6 +87,7 @@ module.exports = {
         }
         else
           res.statusCode = 200;
+        res.end();
       });
     });
   },
