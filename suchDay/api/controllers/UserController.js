@@ -39,12 +39,12 @@ module.exports = {
         console.log(err);
         res.send(err);
       } else {
-        oauth2Client.credentials = {
-          access_token: tokens.access_token,
-          refresh_token: tokens.refresh_token
-        };
         var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
         if (tokens.refresh_token) {
+          oauth2Client.credentials = {
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token
+          };
           User.findOne(u.sub).done(function(err, user) {
             if(typeof user === 'undefined') {
               googleapis.discover('plus', 'v1').execute(function(err, client) {
@@ -65,6 +65,7 @@ module.exports = {
             }
           });
         } else {
+          console.log("found user " + u.sub);
           User.findOne(u.sub).done(function(err, user) {
             if(err) { console.log(err); }
             res.send(user);
