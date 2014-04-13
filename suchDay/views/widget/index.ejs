@@ -10,7 +10,7 @@
         $('input[name=name]').val(data.name);
         $('input[name=url]').val(data.url);
         $('input[name=voiceUrl]').val(data.voiceUrl);
-        $('textarea[name=data]').val(JSON.encode(data.data));
+        $('textarea[name=data]').val(JSON.stringify(data.data));
         $('input[name=settingsUrl]').val(data.settingsUrl);
       });
     });
