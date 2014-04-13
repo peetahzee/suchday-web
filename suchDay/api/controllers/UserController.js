@@ -69,7 +69,9 @@ module.exports = {
             }
           });
         } else {
-          res.send(tokens);
+          User.findOne(u.sub).done(function(err, user) {
+            res.send(user);
+          });
         }
       }
     });
