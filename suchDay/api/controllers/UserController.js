@@ -40,7 +40,7 @@ module.exports = {
         res.send(err);
       } else {
         var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
-        if (tokens.refresh_token) {
+        //if (tokens.refresh_token) {
           oauth2Client.credentials = {
             access_token: tokens.access_token,
             refresh_token: tokens.refresh_token
@@ -55,7 +55,8 @@ module.exports = {
                     User.create({
                       name: data.displayName,
                       googleId: u.sub,
-                      refreshToken: tokens.refresh_token
+                      refreshToken: tokens.refresh_token,
+                      mode: 'blank'
                     }).done(function(err, newUser) {
                       res.send(newUser);
                     });
@@ -65,13 +66,13 @@ module.exports = {
               res.send(user);
             }
           });
-        } else {
+        /*} else {
           console.log("found user " + u.sub);
           User.findByGoogleId(u.sub).done(function(err, users) {
             if(err) { console.log(err); }
             res.send(users[0]);
           });
-        }
+        }*/
       }
     });
   },
