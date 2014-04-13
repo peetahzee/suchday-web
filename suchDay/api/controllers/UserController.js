@@ -78,6 +78,11 @@ module.exports = {
 
   setMode: function(req, res){
     User.findByGoogleId(req.param('user')).done(function(err, users) {
+      if(users.length < 1){
+        res.statusCode = 500;
+        res.end();
+        return;
+      }
       var user = users[0];
       user.mode = req.param('mode');
       user.save(function(err){
