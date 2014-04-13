@@ -24,9 +24,9 @@ module.exports = {
     settingsUrl: 'STRING',
     toJSON: function() {
       var obj = this.toObject();
-      if(obj.data != '' && obj.data != null && typeof obj.data !== 'undefined') {
+      try {
         obj.data = JSON.parse(obj.data);
-      }
+      } catch (e) { console.log("Failed json parse: " + obj.data); }
       return obj;
     }
   }
