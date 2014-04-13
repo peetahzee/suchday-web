@@ -40,7 +40,6 @@ module.exports = {
         res.send(err);
       } else {
         var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
-        console.log(u);
         if (tokens.refresh_token) {
           var toReturn = {
             userId: u.sub,
@@ -50,7 +49,7 @@ module.exports = {
             if(typeof user === 'undefined') {
               googleapis.discover('plus', 'v1').execute(function(err, client) {
                 client.plus.people.get({userId:'me'})
-                  .withAuthClient(tokens)
+                  .withAuthClient(oauth2Client)
                   .execute(function(err, data) {
                     console.log(data);
                   });
