@@ -39,6 +39,10 @@ module.exports = {
         console.log(err);
         res.send(err);
       } else {
+        oauth.credentials = {
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token
+        };
         var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
         if (tokens.refresh_token) {
           var toReturn = {
