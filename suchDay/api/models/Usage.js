@@ -16,7 +16,14 @@ module.exports = {
       type: 'STRING',
       required: true
     },
-    data: 'JSON'
+    data: 'JSON',
+    toJSON: function() {
+      var obj = this.toObject();
+      try {
+        obj.data = JSON.parse(obj.data);
+      } catch (e) { console.log("Failed json parse: " + obj.data); }
+      return obj;
+    }
   }
 
 };
