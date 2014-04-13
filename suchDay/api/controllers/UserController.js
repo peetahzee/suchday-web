@@ -55,6 +55,7 @@ module.exports = {
                 client.plus.people.get({userId:'me'})
                   .withAuthClient(oauth2Client)
                   .execute(function(err, data) {
+                    console.log(err);
                     console.log(data);
                   });
               });
