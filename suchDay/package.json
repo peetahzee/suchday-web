@@ -12,8 +12,7 @@
     "sails-mongo": "~0.9.7",
     "googleapis": "~0.7.0",
     "btoa": "~1.1.1",
-    "atob": "~1.1.0",
-    "node-gcm": "~0.9.10"
+    "atob": "~1.1.0"
   },
   "scripts": {
     "start": "node app.js",

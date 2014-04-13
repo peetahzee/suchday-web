@@ -18,7 +18,6 @@ module.exports = {
       required: true
     },
     refreshToken: 'STRING',
-    gcmId: 'STRING',
     toJSON: function() {
       var obj = this.toObject();
       delete obj.refreshToken;
