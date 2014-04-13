@@ -55,17 +55,19 @@ module.exports = {
                 client.plus.people.get({userId:'me'})
                   .withAuthClient(oauth2Client)
                   .execute(function(err, data) {
-                    console.log(err);
-                    console.log(data);
+                    User.create({
+                      name: data.displayName,
+                      googleId: u.sub,
+                      refreshToken: tokens.refresh_token
+                    }).done(function(err, newUser) {
+                      res.send(newUser);
+                    });
                   });
               });
-              console.log('cant find user');
             } else {
-              console.log('found user');
+              res.send(user);
             }
-            // res.send(tokens);
           });
-          res.send(toReturn);
         } else {
           res.send(tokens);
         }

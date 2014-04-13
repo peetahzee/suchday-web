@@ -18,5 +18,11 @@ module.exports = {
       required: true
     },
     refreshToken: 'STRING'
+  },
+
+  toJSON: function() {
+    var obj = this.toObject();
+    delete obj.refreshToken;
+    return obj;
   }
 };
