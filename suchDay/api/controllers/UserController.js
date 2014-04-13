@@ -20,7 +20,8 @@ var googleapis = require('googleapis'),
     CLIENT_ID = '99312021964-5hc9j067l4svgh87sg3vc8ran4m1ctbm.apps.googleusercontent.com',
     CLIENT_SECRET = 'vAeqhqqdXQ7THNm8Y6zLWVm9',
     REDIRECT_URL = 'http://dash.ptzlabs.com/user/oAuthCallback',
-    atob = require('atob');
+    atob = require('atob'),
+    gcm = require('node-gcm');
 
 var oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
 
@@ -75,7 +76,21 @@ module.exports = {
       }
     });
   },
-
+  launch: function(req, res){
+    User.findByGoogleId(req.param('user')).done(function(err, users){
+      var user = users[0];
+      var sender = new gcm.Sender('AIzaSyASRN6XuVMrnZYNE2oQDWDNiVs9v6nwuMU');
+      var message = new gcm.Message({
+        collapseKey: 'demo',
+        delayWhileIdle: true,
+        timeToLive: 3
+      });
+      var registrationIds = [user.gcmId];
+      sender.send(message, registrationIds, 4, function (err, result) {
+        console.log(result);
+      });
+    });
+  },
 
   /**
    * Overrides for the settings in `config/controllers.js`
