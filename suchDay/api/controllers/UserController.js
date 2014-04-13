@@ -17,7 +17,7 @@
 
 var googleapis = require('googleapis'),
     OAuth2 = googleapis.auth.OAuth2,
-    CLIENT_ID = '99312021964-5hc9j067l4svgh87sg3vc8ran4m1ctbm.apps.googleusercontent.com',
+    CLIENT_ID = '99312021964-5hc9j067l4svgh87sg3vc8ran4m1ctbm@developer.gserviceaccount.com',
     CLIENT_SECRET = 'vAeqhqqdXQ7THNm8Y6zLWVm9',
     REDIRECT_URL = 'http://dash.ptzlabs.com/user/oAuthCallback',
     atob = require('atob');
@@ -40,7 +40,7 @@ module.exports = {
         res.send(err);
       } else {
         var u = JSON.parse(atob(tokens.id_token.split('.')[1]));
-        if (tokens.refresh_token) {
+        //if (tokens.refresh_token) {
           oauth2Client.credentials = {
             access_token: tokens.access_token,
             refresh_token: tokens.refresh_token
@@ -55,7 +55,8 @@ module.exports = {
                     User.create({
                       name: data.displayName,
                       googleId: u.sub,
-                      refreshToken: tokens.refresh_token
+                      refreshToken: tokens.refresh_token,
+                      mode: 'blank'
                     }).done(function(err, newUser) {
                       res.send(newUser);
                     });
@@ -65,17 +66,53 @@ module.exports = {
               res.send(user);
             }
           });
-        } else {
+        /*} else {
           console.log("found user " + u.sub);
           User.findByGoogleId(u.sub).done(function(err, users) {
             if(err) { console.log(err); }
             res.send(users[0]);
           });
-        }
+        }*/
       }
     });
   },
 
+  setMode: function(req, res){
+    User.findByGoogleId(req.param('user')).done(function(err, users) {
+      if(users.length < 1){
+        res.statusCode = 500;
+        res.end();
+        return;
+      }
+      var user = users[0];
+      user.mode = req.param('mode');
+      user.save(function(err){
+        if(err)
+          res.statusCode = 500;
+        else
+          res.statusCode = 200;
+        res.end();
+      });
+    });
+  },
+
+  getMode: function(req, res){
+    User.findByGoogleId(req.param('user')).done(function(err, users) {
+      if(users.length < 1){
+        res.statusCode = 500;
+        res.end();
+        return;
+      }
+      var user = users[0];
+      if(err){
+        res.statusCode = 500;
+        res.end();
+      }
+      else{
+        res.send(user.mode);
+      }
+    });
+  },
 
   /**
    * Overrides for the settings in `config/controllers.js`
