@@ -45,7 +45,8 @@ module.exports = {
             access_token: tokens.access_token,
             refresh_token: tokens.refresh_token
           };
-          User.findOne(u.sub).done(function(err, user) {
+          User.findByGoogleId(u.sub).done(function(err, users) {
+            var user = users[0];
             if(typeof user === 'undefined') {
               googleapis.discover('plus', 'v1').execute(function(err, client) {
                 client.plus.people.get({userId:'me'})
