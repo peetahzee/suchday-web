@@ -76,15 +76,13 @@ module.exports = {
     });
   },
 
-  launch: function(req, res){
+  setMode: function(req, res){
     User.findByGoogleId(req.param('user')).done(function(err, users) {
       var user = users[0];
-      console.log(user);
-      user.shouldLaunch = true;
+      user.mode = req.param('mode');
       user.save(function(err){
-        if(err){
+        if(err)
           res.statusCode = 500;
-        }
         else
           res.statusCode = 200;
         res.end();
@@ -92,14 +90,15 @@ module.exports = {
     });
   },
 
-  shouldLaunch: function(req, res){
+  getMode: function(req, res){
     User.findByGoogleId(req.param('user')).done(function(err, users) {
       var user = users[0];
       if(err){
         res.statusCode = 500;
+        res.end();
       }
       else{
-        res.send(true);
+        res.send(user.mode);
       }
     });
   },
