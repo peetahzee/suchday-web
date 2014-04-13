@@ -19,7 +19,7 @@ var googleapis = require('googleapis'),
     OAuth2 = googleapis.auth.OAuth2,
     CLIENT_ID = '99312021964-5hc9j067l4svgh87sg3vc8ran4m1ctbm.apps.googleusercontent.com',
     CLIENT_SECRET = 'vAeqhqqdXQ7THNm8Y6zLWVm9',
-    REDIRECT_URL = 'http://localhost:1337/user/oAuthCallback',
+    REDIRECT_URL = 'http://dash.ptzlabs.com/user/oAuthCallback',
     atob = require('atob');
 
 var oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL);
