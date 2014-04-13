@@ -22,7 +22,12 @@ module.exports = {
     data: 'JSON',
     // if the widget has a custom setup api, then we display a webview with this settingsUrl instead. Leave blank otherwise.
     settingsUrl: 'STRING',
-    
+    toJSON: function() {
+      var obj = this.toObject();
+      obj.data = JSON.parse(obj.data);
+      return obj;
+    }
+
   }
 
 };
