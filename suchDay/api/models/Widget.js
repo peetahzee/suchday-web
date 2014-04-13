@@ -24,7 +24,7 @@ module.exports = {
     settingsUrl: 'STRING',
     toJSON: function() {
       var obj = this.toObject();
-      // obj.data = JSON.parse(obj.data);
+      obj.data = JSON.parse(obj.data);
       return obj;
     }
 
